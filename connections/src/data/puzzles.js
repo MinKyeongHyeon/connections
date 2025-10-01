@@ -23,8 +23,8 @@ export const puzzles = [
         icon: "triangle",
       },
       {
-        name: "___당",
-        words: ["국회", "찜질", "당구", "노래"],
+        name: "___방",
+        words: ["PC", "찜질", "당구", "노래"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -42,7 +42,7 @@ export const puzzles = [
       },
       {
         name: "지하철 호선",
-        words: ["일호선", "이호선", "삼호선", "사호선"],
+        words: ["금릉", "홍대입구", "시청", "매봉"],
         difficulty: "medium",
         color: "bg-green-400",
         icon: "square",
@@ -87,8 +87,8 @@ export const puzzles = [
         icon: "triangle",
       },
       {
-        name: "___방",
-        words: ["PC", "노래", "찜질", "코인"],
+        name: "사신",
+        words: ["청룡", "백호", "현무", "백호"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -120,7 +120,7 @@ export const puzzles = [
       },
       {
         name: "___수",
-        words: ["물", "머리", "인원", "횟"],
+        words: ["무리", "머리", "인원", "횟"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -184,7 +184,7 @@ export const puzzles = [
       },
       {
         name: "___장",
-        words: ["시", "운동", "공", "냉장"],
+        words: ["시", "운동", "공", "행사"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -247,8 +247,8 @@ export const puzzles = [
         icon: "triangle",
       },
       {
-        name: "___집",
-        words: ["떡볶이", "부동산", "출판", "백화"],
+        name: "분식",
+        words: ["떡볶이", "순대", "튀김", "쫄면"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -280,7 +280,7 @@ export const puzzles = [
       },
       {
         name: "___차",
-        words: ["자동", "녹", "커피", "승용"],
+        words: ["자동", "녹", "쌍화", "승용"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -312,7 +312,7 @@ export const puzzles = [
       },
       {
         name: "___선",
-        words: ["전", "직", "곡", "지하철"],
+        words: ["전", "직", "곡", "포물"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -337,14 +337,14 @@ export const puzzles = [
       },
       {
         name: "IT 기업",
-        words: ["삼성", "LG", "SK", "현대"],
+        words: ["삼성", "아마존", "메타", "애플"],
         difficulty: "hard",
         color: "bg-blue-400",
         icon: "triangle",
       },
       {
         name: "___판",
-        words: ["야구", "재", "판타지소설", "회전"],
+        words: ["이판사", "재", "난장", "회전"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -408,7 +408,7 @@ export const puzzles = [
       },
       {
         name: "___물",
-        words: ["음료수", "건축", "괴", "가축"],
+        words: ["장", "건축", "괴", "가축"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -440,7 +440,7 @@ export const puzzles = [
       },
       {
         name: "___석",
-        words: ["좌", "화", "보", "수정"],
+        words: ["좌", "화", "보", "대리"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -472,7 +472,7 @@ export const puzzles = [
       },
       {
         name: "___회",
-        words: ["기", "횟수", "사교", "재"],
+        words: ["기", "종친", "사교", "재"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -536,7 +536,7 @@ export const puzzles = [
       },
       {
         name: "___도",
-        words: ["온", "각", "밝기", "습"],
+        words: ["온", "각", "제", "습"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -568,7 +568,7 @@ export const puzzles = [
       },
       {
         name: "___지",
-        words: ["휴지", "편", "꿀", "종이"],
+        words: ["휴", "편", "가락", "종이"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -600,7 +600,7 @@ export const puzzles = [
       },
       {
         name: "___금",
-        words: ["월", "연", "돈", "황"],
+        words: ["월", "연", "자본", "황"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",
@@ -664,7 +664,7 @@ export const puzzles = [
       },
       {
         name: "___생",
-        words: ["학", "인", "의", "출"],
+        words: ["학", "인", "연습", "출"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",

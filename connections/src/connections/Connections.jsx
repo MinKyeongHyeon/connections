@@ -146,7 +146,7 @@ const KoreanConnections = () => {
   const startNewPuzzle = () => {
     const newIndex = (currentPuzzleIndex + 1) % puzzles.length;
     setCurrentPuzzleIndex(newIndex);
-    
+
     const puzzle = puzzles[newIndex];
     const newWords = puzzle.categories.flatMap((cat) => cat.words);
     setWords([...newWords].sort(() => Math.random() - 0.5));
