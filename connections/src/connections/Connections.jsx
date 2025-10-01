@@ -123,9 +123,7 @@ const KoreanConnections = () => {
   const todayPuzzle = puzzles[getDayOfYear() % puzzles.length];
   const allWords = todayPuzzle.categories.flatMap((cat) => cat.words);
 
-  const [words, setWords] = useState(
-    [...allWords].sort(() => Math.random() - 0.5)
-  );
+  const [words, setWords] = useState([...allWords].sort(() => Math.random() - 0.5));
   const [selected, setSelected] = useState([]);
   const [solved, setSolved] = useState([]);
   const [mistakes, setMistakes] = useState(0);
@@ -134,15 +132,15 @@ const KoreanConnections = () => {
   const [gameOver, setGameOver] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
-  
+
   // 타이머 관련 상태
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  
+
   // 결과 다이얼로그 상태
   const [showResultDialog, setShowResultDialog] = useState(false);
-  
+
   // 리더보드 상태
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
@@ -162,7 +160,7 @@ const KoreanConnections = () => {
 
   // 로컬 스토리지에서 리더보드 불러오기
   useEffect(() => {
-    const savedLeaderboard = localStorage.getItem('connections-leaderboard');
+    const savedLeaderboard = localStorage.getItem("connections-leaderboard");
     if (savedLeaderboard) {
       setLeaderboard(JSON.parse(savedLeaderboard));
     }
@@ -182,7 +180,7 @@ const KoreanConnections = () => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     const centiseconds = Math.floor((ms % 1000) / 10);
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${centiseconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${centiseconds.toString().padStart(2, "0")}`;
   };
 
   // 리더보드에 기록 추가
@@ -204,7 +202,7 @@ const KoreanConnections = () => {
       .slice(0, 10); // 상위 10개만 유지
 
     setLeaderboard(updatedLeaderboard);
-    localStorage.setItem('connections-leaderboard', JSON.stringify(updatedLeaderboard));
+    localStorage.setItem("connections-leaderboard", JSON.stringify(updatedLeaderboard));
   };
 
   const getIcon = (iconType) => {
@@ -224,18 +222,14 @@ const KoreanConnections = () => {
   };
 
   const shuffleWords = () => {
-    const remaining = words.filter(
-      (w) => !solved.flatMap((s) => s.words).includes(w)
-    );
+    const remaining = words.filter((w) => !solved.flatMap((s) => s.words).includes(w));
     const shuffled = [...remaining].sort(() => Math.random() - 0.5);
-    setWords([...solved.flatMap((s) => s.words), ...shuffled]);
+    setWords(shuffled);
     setSelected([]);
     setFocusedIndex(0);
   };
 
   const toggleWord = (word, index) => {
-    if (solved.flatMap((s) => s.words).includes(word)) return;
-
     startGame(); // 첫 선택 시 게임 시작
 
     if (selected.includes(word)) {
@@ -251,14 +245,14 @@ const KoreanConnections = () => {
 
     const category = todayPuzzle.categories.find(
       (cat) =>
-        selected.every((word) => cat.words.includes(word)) &&
-        selected.length === cat.words.length
+        selected.every((word) => cat.words.includes(word)) && selected.length === cat.words.length
     );
 
     if (category) {
       setMessage(`정답! ${category.name} 카테고리를 찾았습니다!`);
       setMessageType("success");
       setSolved([...solved, category]);
+      setWords(words.filter((w) => !category.words.includes(w)));
       setSelected([]);
 
       if (solved.length + 1 === todayPuzzle.categories.length) {
@@ -320,15 +314,12 @@ const KoreanConnections = () => {
   };
 
   const handleKeyDown = (e, word, index) => {
-    const remaining = words.filter(
-      (w) => !solved.flatMap((s) => s.words).includes(w)
-    );
-    const currentIndex = remaining.indexOf(word);
+    const currentIndex = words.indexOf(word);
 
     switch (e.key) {
       case "ArrowRight":
         e.preventDefault();
-        if (currentIndex < remaining.length - 1) {
+        if (currentIndex < words.length - 1) {
           setFocusedIndex(currentIndex + 1);
         }
         break;
@@ -340,7 +331,7 @@ const KoreanConnections = () => {
         break;
       case "ArrowDown":
         e.preventDefault();
-        if (currentIndex + 4 < remaining.length) {
+        if (currentIndex + 4 < words.length) {
           setFocusedIndex(currentIndex + 4);
         }
         break;
@@ -378,9 +369,7 @@ const KoreanConnections = () => {
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 sm:p-6 text-white">
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2">
-                  한국어 커넥션
-                </h1>
+                <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2">한국어 커넥션</h1>
                 <p className="text-sm sm:text-base text-indigo-100">
                   16개의 단어를 4개씩 묶어보세요!
                 </p>
@@ -421,9 +410,7 @@ const KoreanConnections = () => {
                 role="region"
                 aria-label="게임 방법"
               >
-                <h3 className="font-bold text-indigo-900 mb-3 text-sm sm:text-base">
-                  게임 방법
-                </h3>
+                <h3 className="font-bold text-indigo-900 mb-3 text-sm sm:text-base">게임 방법</h3>
                 <ul className="text-xs sm:text-sm text-indigo-800 space-y-2">
                   <li className="flex items-start gap-2">
                     <span className="text-indigo-600 font-bold">1.</span>
@@ -471,10 +458,7 @@ const KoreanConnections = () => {
                   aria-live="polite"
                 >
                   남은 기회:{" "}
-                  <span className="text-lg text-indigo-600">
-                    {maxMistakes - mistakes}
-                  </span>
-                  개
+                  <span className="text-lg text-indigo-600">{maxMistakes - mistakes}</span>개
                 </div>
                 <button
                   onClick={shuffleWords}
@@ -519,11 +503,7 @@ const KoreanConnections = () => {
             )}
 
             {/* 해결된 카테고리 */}
-            <div
-              className="space-y-2 mb-6"
-              role="list"
-              aria-label="해결된 카테고리"
-            >
+            <div className="space-y-2 mb-6" role="list" aria-label="해결된 카테고리">
               {solved.map((category, idx) => (
                 <div
                   key={idx}
@@ -547,16 +527,14 @@ const KoreanConnections = () => {
               role="grid"
               aria-label="단어 선택 영역"
             >
-              {words
-                .filter((w) => !solved.flatMap((s) => s.words).includes(w))
-                .map((word, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => toggleWord(word, idx)}
-                    onKeyDown={(e) => handleKeyDown(e, word, idx)}
-                    disabled={gameOver}
-                    tabIndex={focusedIndex === idx ? 0 : -1}
-                    className={`
+              {words.map((word, idx) => (
+                <button
+                  key={word}
+                  onClick={() => toggleWord(word, idx)}
+                  onKeyDown={(e) => handleKeyDown(e, word, idx)}
+                  disabled={gameOver}
+                  tabIndex={focusedIndex === idx ? 0 : -1}
+                  className={`
                     p-3 sm:p-4 rounded-xl font-semibold transition-all text-sm sm:text-base
                     focus:outline-none focus:ring-4 focus:ring-indigo-300
                     ${
@@ -564,22 +542,16 @@ const KoreanConnections = () => {
                         ? "bg-indigo-600 text-white scale-95 shadow-lg"
                         : "bg-gray-50 hover:bg-gray-100 text-gray-800 shadow-sm hover:shadow-md"
                     }
-                    ${
-                      gameOver
-                        ? "opacity-50 cursor-not-allowed"
-                        : "cursor-pointer active:scale-90"
-                    }
+                    ${gameOver ? "opacity-50 cursor-not-allowed" : "cursor-pointer active:scale-90"}
                     min-h-[60px] sm:min-h-[80px] flex items-center justify-center
                   `}
-                    role="gridcell"
-                    aria-pressed={selected.includes(word)}
-                    aria-label={`${word} ${
-                      selected.includes(word) ? "선택됨" : ""
-                    }`}
-                  >
-                    {word}
-                  </button>
-                ))}
+                  role="gridcell"
+                  aria-pressed={selected.includes(word)}
+                  aria-label={`${word} ${selected.includes(word) ? "선택됨" : ""}`}
+                >
+                  {word}
+                </button>
+              ))}
             </div>
 
             {/* 버튼 그룹 */}
@@ -632,9 +604,7 @@ const KoreanConnections = () => {
         {/* 푸터 */}
         <div className="text-center mt-6 text-xs sm:text-sm text-gray-600 space-y-1">
           <p>매일 자정에 새로운 문제가 업데이트됩니다!</p>
-          <p className="text-gray-500">
-            문제 아이디어 제보: contact@example.com
-          </p>
+          <p className="text-gray-500">문제 아이디어 제보: manemin2@gmail.com</p>
         </div>
       </div>
 
@@ -644,7 +614,9 @@ const KoreanConnections = () => {
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-slideUp">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold text-gray-900">
-                {solved.length === todayPuzzle.categories.length ? "🎉 축하합니다!" : "😢 아쉽네요!"}
+                {solved.length === todayPuzzle.categories.length
+                  ? "🎉 축하합니다!"
+                  : "😢 아쉽네요!"}
               </h2>
               <button
                 onClick={() => setShowResultDialog(false)}
@@ -653,7 +625,7 @@ const KoreanConnections = () => {
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-xl">
                 <div className="grid grid-cols-2 gap-4 text-center">
@@ -662,7 +634,9 @@ const KoreanConnections = () => {
                     <div className="text-sm text-gray-600 mt-1">걸린 시간</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-purple-600">{mistakes}/{maxMistakes}</div>
+                    <div className="text-3xl font-bold text-purple-600">
+                      {mistakes}/{maxMistakes}
+                    </div>
                     <div className="text-sm text-gray-600 mt-1">실수 횟수</div>
                   </div>
                 </div>
@@ -675,13 +649,17 @@ const KoreanConnections = () => {
                   return (
                     <div
                       key={idx}
-                      className={`p-3 rounded-lg ${isSolved ? category.color : 'bg-gray-100'}`}
+                      className={`p-3 rounded-lg ${isSolved ? category.color : "bg-gray-100"}`}
                     >
-                      <div className={`font-semibold ${isSolved ? 'text-white' : 'text-gray-400'} flex items-center gap-2`}>
+                      <div
+                        className={`font-semibold ${isSolved ? "text-white" : "text-gray-400"} flex items-center gap-2`}
+                      >
                         {getIcon(category.icon)}
                         {category.name}
                       </div>
-                      <div className={`text-sm mt-1 ${isSolved ? 'text-white/90' : 'text-gray-400'}`}>
+                      <div
+                        className={`text-sm mt-1 ${isSolved ? "text-white/90" : "text-gray-400"}`}
+                      >
                         {category.words.join(" · ")}
                       </div>
                     </div>
@@ -731,25 +709,27 @@ const KoreanConnections = () => {
                     key={idx}
                     className={`p-4 rounded-xl border-2 transition-all ${
                       idx === 0
-                        ? 'bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-300'
+                        ? "bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-300"
                         : idx === 1
-                        ? 'bg-gradient-to-r from-gray-50 to-slate-50 border-gray-300'
-                        : idx === 2
-                        ? 'bg-gradient-to-r from-orange-50 to-amber-50 border-orange-300'
-                        : 'bg-gray-50 border-gray-200'
+                          ? "bg-gradient-to-r from-gray-50 to-slate-50 border-gray-300"
+                          : idx === 2
+                            ? "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-300"
+                            : "bg-gray-50 border-gray-200"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                          idx === 0
-                            ? 'bg-yellow-400 text-white'
-                            : idx === 1
-                            ? 'bg-gray-400 text-white'
-                            : idx === 2
-                            ? 'bg-orange-400 text-white'
-                            : 'bg-gray-200 text-gray-600'
-                        }`}>
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                            idx === 0
+                              ? "bg-yellow-400 text-white"
+                              : idx === 1
+                                ? "bg-gray-400 text-white"
+                                : idx === 2
+                                  ? "bg-orange-400 text-white"
+                                  : "bg-gray-200 text-gray-600"
+                          }`}
+                        >
                           {idx + 1}
                         </div>
                         <div>
@@ -758,14 +738,14 @@ const KoreanConnections = () => {
                           </div>
                           <div className="text-sm text-gray-600">
                             문제 #{entry.puzzleNumber} · 실수 {entry.mistakes}회
-                            {entry.won ? ' · ✅ 성공' : ' · ❌ 실패'}
+                            {entry.won ? " · ✅ 성공" : " · ❌ 실패"}
                           </div>
                         </div>
                       </div>
                       <div className="text-xs text-gray-500">
-                        {new Date(entry.date).toLocaleDateString('ko-KR', {
-                          month: 'short',
-                          day: 'numeric',
+                        {new Date(entry.date).toLocaleDateString("ko-KR", {
+                          month: "short",
+                          day: "numeric",
                         })}
                       </div>
                     </div>
