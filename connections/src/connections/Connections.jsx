@@ -22,7 +22,9 @@ const KoreanConnections = () => {
     return Math.floor(diff / oneDay);
   };
 
-  const todayPuzzle = puzzles[getDayOfYear() % puzzles.length];
+  // 현재 퍼즐 인덱스 상태
+  const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(getDayOfYear() % puzzles.length);
+  const todayPuzzle = puzzles[currentPuzzleIndex];
   const allWords = todayPuzzle.categories.flatMap((cat) => cat.words);
 
   const [words, setWords] = useState([...allWords].sort(() => Math.random() - 0.5));
@@ -121,6 +123,43 @@ const KoreanConnections = () => {
       default:
         return null;
     }
+  };
+
+  // 게임 리셋 함수 (같은 문제)
+  const resetGame = () => {
+    const puzzle = puzzles[currentPuzzleIndex];
+    const newWords = puzzle.categories.flatMap((cat) => cat.words);
+    setWords([...newWords].sort(() => Math.random() - 0.5));
+    setSelected([]);
+    setSolved([]);
+    setMistakes(0);
+    setMessage("");
+    setGameOver(false);
+    setTimer(0);
+    setIsTimerRunning(false);
+    setGameStarted(false);
+    setShowResultDialog(false);
+    setFocusedIndex(0);
+  };
+
+  // 새 문제 시작
+  const startNewPuzzle = () => {
+    const newIndex = (currentPuzzleIndex + 1) % puzzles.length;
+    setCurrentPuzzleIndex(newIndex);
+    
+    const puzzle = puzzles[newIndex];
+    const newWords = puzzle.categories.flatMap((cat) => cat.words);
+    setWords([...newWords].sort(() => Math.random() - 0.5));
+    setSelected([]);
+    setSolved([]);
+    setMistakes(0);
+    setMessage("");
+    setGameOver(false);
+    setTimer(0);
+    setIsTimerRunning(false);
+    setGameStarted(false);
+    setShowResultDialog(false);
+    setFocusedIndex(0);
   };
 
   const shuffleWords = () => {
@@ -491,19 +530,14 @@ const KoreanConnections = () => {
               <div className="space-y-3 mt-4">
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={() => window.location.reload()}
+                    onClick={resetGame}
                     className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-indigo-300"
                     aria-label="다시 도전하기"
                   >
                     🔄 다시 도전하기
                   </button>
                   <button
-                    onClick={() => {
-                      const currentPuzzle = getDayOfYear() % puzzles.length;
-                      const newPuzzle = (currentPuzzle + 1) % puzzles.length;
-                      window.location.href = `?puzzle=${newPuzzle}`;
-                      window.location.reload();
-                    }}
+                    onClick={startNewPuzzle}
                     className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-blue-300"
                     aria-label="새로운 문제 도전하기"
                   >
@@ -597,18 +631,13 @@ const KoreanConnections = () => {
               <div className="space-y-3">
                 <div className="flex gap-3">
                   <button
-                    onClick={() => window.location.reload()}
+                    onClick={resetGame}
                     className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold transition-all shadow-lg"
                   >
                     🔄 다시 도전
                   </button>
                   <button
-                    onClick={() => {
-                      const currentPuzzle = getDayOfYear() % puzzles.length;
-                      const newPuzzle = (currentPuzzle + 1) % puzzles.length;
-                      window.location.href = `?puzzle=${newPuzzle}`;
-                      window.location.reload();
-                    }}
+                    onClick={startNewPuzzle}
                     className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-bold transition-all shadow-lg"
                   >
                     ✨ 새 문제
