@@ -393,16 +393,18 @@ const KoreanConnections = () => {
               </div>
             </div>
 
-            {/* 메시지 */}
-            {message && (
-              <div
-                className={`mb-4 p-3 sm:p-4 border-2 rounded-xl text-center font-semibold text-sm sm:text-base ${messageStyles[messageType]} animate-pulse`}
-                role="alert"
-                aria-live="assertive"
-              >
-                {message}
-              </div>
-            )}
+            {/* 메시지 - 고정 높이 */}
+            <div className="mb-4 h-16 sm:h-20 flex items-center justify-center">
+              {message && (
+                <div
+                  className={`w-full p-3 sm:p-4 border-2 rounded-xl text-center font-semibold text-sm sm:text-base ${messageStyles[messageType]} animate-pulse`}
+                  role="alert"
+                  aria-live="assertive"
+                >
+                  {message}
+                </div>
+              )}
+            </div>
 
             {/* 해결된 카테고리 */}
             <div className="space-y-2 mb-6" role="list" aria-label="해결된 카테고리">
@@ -484,16 +486,39 @@ const KoreanConnections = () => {
               </button>
             </div>
 
-            {/* 공유 버튼 */}
+            {/* 게임 오버 버튼들 */}
             {gameOver && (
-              <button
-                onClick={shareResult}
-                className="w-full mt-4 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-green-300"
-                aria-label="결과 공유하기"
-              >
-                <Share2 size={20} />
-                결과 공유하기
-              </button>
+              <div className="space-y-3 mt-4">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-indigo-300"
+                    aria-label="다시 도전하기"
+                  >
+                    🔄 다시 도전하기
+                  </button>
+                  <button
+                    onClick={() => {
+                      const currentPuzzle = getDayOfYear() % puzzles.length;
+                      const newPuzzle = (currentPuzzle + 1) % puzzles.length;
+                      window.location.href = `?puzzle=${newPuzzle}`;
+                      window.location.reload();
+                    }}
+                    className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    aria-label="새로운 문제 도전하기"
+                  >
+                    ✨ 새로운 문제
+                  </button>
+                </div>
+                <button
+                  onClick={shareResult}
+                  className="w-full py-3 sm:py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-green-300"
+                  aria-label="결과 공유하기"
+                >
+                  <Share2 size={20} />
+                  결과 공유하기
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -569,13 +594,34 @@ const KoreanConnections = () => {
                 })}
               </div>
 
-              <button
-                onClick={shareResult}
-                className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg"
-              >
-                <Share2 size={20} />
-                결과 공유하기
-              </button>
+              <div className="space-y-3">
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-bold transition-all shadow-lg"
+                  >
+                    🔄 다시 도전
+                  </button>
+                  <button
+                    onClick={() => {
+                      const currentPuzzle = getDayOfYear() % puzzles.length;
+                      const newPuzzle = (currentPuzzle + 1) % puzzles.length;
+                      window.location.href = `?puzzle=${newPuzzle}`;
+                      window.location.reload();
+                    }}
+                    className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl font-bold transition-all shadow-lg"
+                  >
+                    ✨ 새 문제
+                  </button>
+                </div>
+                <button
+                  onClick={shareResult}
+                  className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg"
+                >
+                  <Share2 size={20} />
+                  결과 공유하기
+                </button>
+              </div>
             </div>
           </div>
         </div>
