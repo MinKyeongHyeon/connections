@@ -11,107 +11,9 @@ import {
   Trophy,
   X,
 } from "lucide-react";
+import { puzzles } from "../data/puzzles";
 
 const KoreanConnections = () => {
-  const puzzles = [
-    {
-      categories: [
-        {
-          name: "발효식품",
-          words: ["김치", "된장", "청국장", "고추장"],
-          difficulty: "easy",
-          color: "bg-yellow-400",
-          icon: "circle",
-        },
-        {
-          name: "광역시",
-          words: ["서울", "부산", "대구", "인천"],
-          difficulty: "medium",
-          color: "bg-green-400",
-          icon: "square",
-        },
-        {
-          name: "카페 메뉴",
-          words: ["아메리카노", "카페라떼", "카푸치노", "에스프레소"],
-          difficulty: "hard",
-          color: "bg-blue-400",
-          icon: "triangle",
-        },
-        {
-          name: "___당",
-          words: ["국회", "찜질", "당구", "노래"],
-          difficulty: "expert",
-          color: "bg-purple-400",
-          icon: "star",
-        },
-      ],
-    },
-    {
-      categories: [
-        {
-          name: "과일",
-          words: ["사과", "배", "포도", "수박"],
-          difficulty: "easy",
-          color: "bg-yellow-400",
-          icon: "circle",
-        },
-        {
-          name: "지하철 호선",
-          words: ["일호선", "이호선", "삼호선", "사호선"],
-          difficulty: "medium",
-          color: "bg-green-400",
-          icon: "square",
-        },
-        {
-          name: "편의점",
-          words: ["세븐일레븐", "CU", "GS25", "이마트24"],
-          difficulty: "hard",
-          color: "bg-blue-400",
-          icon: "triangle",
-        },
-        {
-          name: "___맨",
-          words: ["슈퍼", "아이언", "배트", "스파이더"],
-          difficulty: "expert",
-          color: "bg-purple-400",
-          icon: "star",
-        },
-      ],
-    },
-    {
-      categories: [
-        {
-          name: "계절",
-          words: ["봄", "여름", "가을", "겨울"],
-          difficulty: "easy",
-          color: "bg-yellow-400",
-          icon: "circle",
-        },
-        {
-          name: "한국 대학",
-          words: ["서울대", "연세대", "고려대", "카이스트"],
-          difficulty: "medium",
-          color: "bg-green-400",
-          icon: "square",
-        },
-        {
-          name: "배달앱",
-          words: ["배달의민족", "쿠팡이츠", "요기요", "땡겨요"],
-          difficulty: "hard",
-          color: "bg-blue-400",
-          icon: "triangle",
-        },
-        {
-          name: "___방",
-          words: ["PC", "노래", "찜질", "코인"],
-          difficulty: "expert",
-          color: "bg-purple-400",
-          icon: "star",
-        },
-      ],
-    },
-  ];
-
   const getDayOfYear = () => {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 0);
@@ -369,7 +271,7 @@ const KoreanConnections = () => {
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 sm:p-6 text-white">
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2">한국어 커넥션</h1>
+                <h1 className="text-2xl sm:text-4xl font-bold mb-1 sm:mb-2">같은 주제 찾기</h1>
                 <p className="text-sm sm:text-base text-indigo-100">
                   16개의 단어를 4개씩 묶어보세요!
                 </p>
