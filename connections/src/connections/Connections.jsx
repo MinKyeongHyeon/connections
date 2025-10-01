@@ -7,6 +7,9 @@ import {
   Circle,
   Square,
   Triangle,
+  Clock,
+  Trophy,
+  X,
 } from "lucide-react";
 
 const KoreanConnections = () => {
@@ -131,8 +134,78 @@ const KoreanConnections = () => {
   const [gameOver, setGameOver] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(0);
+  
+  // 타이머 관련 상태
+  const [timer, setTimer] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  
+  // 결과 다이얼로그 상태
+  const [showResultDialog, setShowResultDialog] = useState(false);
+  
+  // 리더보드 상태
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([]);
 
   const maxMistakes = 4;
+
+  // 타이머 효과
+  useEffect(() => {
+    let interval;
+    if (isTimerRunning && !gameOver) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev + 10); // 10ms 단위로 증가
+      }, 10);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerRunning, gameOver]);
+
+  // 로컬 스토리지에서 리더보드 불러오기
+  useEffect(() => {
+    const savedLeaderboard = localStorage.getItem('connections-leaderboard');
+    if (savedLeaderboard) {
+      setLeaderboard(JSON.parse(savedLeaderboard));
+    }
+  }, []);
+
+  // 게임 시작 (첫 단어 선택 시)
+  const startGame = () => {
+    if (!gameStarted) {
+      setGameStarted(true);
+      setIsTimerRunning(true);
+    }
+  };
+
+  // 타이머 포맷 (00:00.00)
+  const formatTime = (ms) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const centiseconds = Math.floor((ms % 1000) / 10);
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${centiseconds.toString().padStart(2, '0')}`;
+  };
+
+  // 리더보드에 기록 추가
+  const saveToLeaderboard = (time, mistakes, won) => {
+    const newEntry = {
+      date: new Date().toISOString(),
+      time: time,
+      mistakes: mistakes,
+      won: won,
+      puzzleNumber: getDayOfYear(),
+    };
+
+    const updatedLeaderboard = [...leaderboard, newEntry]
+      .sort((a, b) => {
+        if (a.won !== b.won) return b.won - a.won; // 성공한 게임 우선
+        if (a.won) return a.time - b.time; // 성공한 경우 시간 빠른 순
+        return a.mistakes - b.mistakes; // 실패한 경우 실수 적은 순
+      })
+      .slice(0, 10); // 상위 10개만 유지
+
+    setLeaderboard(updatedLeaderboard);
+    localStorage.setItem('connections-leaderboard', JSON.stringify(updatedLeaderboard));
+  };
 
   const getIcon = (iconType) => {
     const iconProps = { size: 16, className: "inline-block" };
@@ -163,6 +236,8 @@ const KoreanConnections = () => {
   const toggleWord = (word, index) => {
     if (solved.flatMap((s) => s.words).includes(word)) return;
 
+    startGame(); // 첫 선택 시 게임 시작
+
     if (selected.includes(word)) {
       setSelected(selected.filter((w) => w !== word));
     } else if (selected.length < 4) {
@@ -188,8 +263,11 @@ const KoreanConnections = () => {
 
       if (solved.length + 1 === todayPuzzle.categories.length) {
         setGameOver(true);
+        setIsTimerRunning(false);
         setMessage("축하합니다! 모든 카테고리를 찾았습니다!");
         setMessageType("success");
+        saveToLeaderboard(timer, mistakes, true);
+        setTimeout(() => setShowResultDialog(true), 500);
       }
     } else {
       const almostCorrect = todayPuzzle.categories.find((cat) => {
@@ -210,8 +288,11 @@ const KoreanConnections = () => {
 
       if (mistakes + 1 >= maxMistakes) {
         setGameOver(true);
+        setIsTimerRunning(false);
         setMessage("게임 오버! 내일 다시 도전해보세요");
         setMessageType("error");
+        saveToLeaderboard(timer, mistakes + 1, false);
+        setTimeout(() => setShowResultDialog(true), 500);
       }
     }
 
@@ -304,16 +385,31 @@ const KoreanConnections = () => {
                   16개의 단어를 4개씩 묶어보세요!
                 </p>
               </div>
-              <button
-                onClick={() => setShowHelp(!showHelp)}
-                className="p-2 hover:bg-white/20 rounded-lg transition"
-                aria-label="도움말 토글"
-              >
-                <Info size={24} />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowLeaderboard(true)}
+                  className="p-2 hover:bg-white/20 rounded-lg transition"
+                  aria-label="리더보드"
+                >
+                  <Trophy size={24} />
+                </button>
+                <button
+                  onClick={() => setShowHelp(!showHelp)}
+                  className="p-2 hover:bg-white/20 rounded-lg transition"
+                  aria-label="도움말 토글"
+                >
+                  <Info size={24} />
+                </button>
+              </div>
             </div>
-            <div className="text-xs sm:text-sm text-indigo-200">
-              오늘의 문제 #{getDayOfYear()}
+            <div className="flex justify-between items-center">
+              <div className="text-xs sm:text-sm text-indigo-200">
+                오늘의 문제 #{getDayOfYear()}
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-lg">
+                <Clock size={16} />
+                <span className="font-mono font-bold">{formatTime(timer)}</span>
+              </div>
             </div>
           </div>
 
@@ -541,6 +637,145 @@ const KoreanConnections = () => {
           </p>
         </div>
       </div>
+
+      {/* 결과 다이얼로그 */}
+      {showResultDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-slideUp">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold text-gray-900">
+                {solved.length === todayPuzzle.categories.length ? "🎉 축하합니다!" : "😢 아쉽네요!"}
+              </h2>
+              <button
+                onClick={() => setShowResultDialog(false)}
+                className="p-1 hover:bg-gray-100 rounded-lg transition"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-xl">
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div>
+                    <div className="text-3xl font-bold text-indigo-600">{formatTime(timer)}</div>
+                    <div className="text-sm text-gray-600 mt-1">걸린 시간</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-purple-600">{mistakes}/{maxMistakes}</div>
+                    <div className="text-sm text-gray-600 mt-1">실수 횟수</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="font-semibold text-gray-900">카테고리</h3>
+                {todayPuzzle.categories.map((category, idx) => {
+                  const isSolved = solved.some((s) => s.name === category.name);
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-3 rounded-lg ${isSolved ? category.color : 'bg-gray-100'}`}
+                    >
+                      <div className={`font-semibold ${isSolved ? 'text-white' : 'text-gray-400'} flex items-center gap-2`}>
+                        {getIcon(category.icon)}
+                        {category.name}
+                      </div>
+                      <div className={`text-sm mt-1 ${isSolved ? 'text-white/90' : 'text-gray-400'}`}>
+                        {category.words.join(" · ")}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={shareResult}
+                className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg"
+              >
+                <Share2 size={20} />
+                결과 공유하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 리더보드 모달 */}
+      {showLeaderboard && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 sm:p-8 max-h-[80vh] overflow-y-auto animate-slideUp">
+            <div className="flex justify-between items-start mb-6">
+              <div className="flex items-center gap-2">
+                <Trophy className="text-yellow-500" size={28} />
+                <h2 className="text-2xl font-bold text-gray-900">리더보드</h2>
+              </div>
+              <button
+                onClick={() => setShowLeaderboard(false)}
+                className="p-1 hover:bg-gray-100 rounded-lg transition"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {leaderboard.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <Trophy size={48} className="mx-auto mb-4 opacity-20" />
+                <p>아직 기록이 없습니다.</p>
+                <p className="text-sm mt-2">첫 번째 기록을 남겨보세요!</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {leaderboard.map((entry, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-4 rounded-xl border-2 transition-all ${
+                      idx === 0
+                        ? 'bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-300'
+                        : idx === 1
+                        ? 'bg-gradient-to-r from-gray-50 to-slate-50 border-gray-300'
+                        : idx === 2
+                        ? 'bg-gradient-to-r from-orange-50 to-amber-50 border-orange-300'
+                        : 'bg-gray-50 border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                          idx === 0
+                            ? 'bg-yellow-400 text-white'
+                            : idx === 1
+                            ? 'bg-gray-400 text-white'
+                            : idx === 2
+                            ? 'bg-orange-400 text-white'
+                            : 'bg-gray-200 text-gray-600'
+                        }`}>
+                          {idx + 1}
+                        </div>
+                        <div>
+                          <div className="font-mono font-bold text-lg">
+                            {formatTime(entry.time)}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            문제 #{entry.puzzleNumber} · 실수 {entry.mistakes}회
+                            {entry.won ? ' · ✅ 성공' : ' · ❌ 실패'}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {new Date(entry.date).toLocaleDateString('ko-KR', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
