@@ -50,11 +50,6 @@ export default function KoreanConnections() {
           </div>
 
           <div className="p-4 sm:p-8">
-            <MessageBar
-              message={game.message}
-              messageType={game.messageType}
-              messageStyles={game.messageStyles}
-            />
 
             <div className="mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
@@ -161,6 +156,13 @@ export default function KoreanConnections() {
         leaderboard={game.leaderboard}
         formatTime={game.formatTime}
       />
+
+      {/* 메시지 바: 화면 하단에 고정하여 모바일에서 레이아웃 변화 방지 */}
+      <div className="fixed left-0 right-0 bottom-4 flex justify-center z-50 px-4 pointer-events-none">
+        <div className="w-full max-w-3xl pointer-events-auto">
+          <MessageBar message={game.message} messageType={game.messageType} messageStyles={game.messageStyles} />
+        </div>
+      </div>
     </div>
   );
 }
