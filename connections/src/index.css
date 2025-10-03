@@ -30,4 +30,27 @@
       opacity: 1;
     }
   }
+
+  .animate-pop {
+    animation: pop 180ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  .animate-press {
+    transition: transform 120ms ease-out;
+  }
+
+  .animate-toast {
+    animation: toastIn 300ms cubic-bezier(.2,.9,.3,1);
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.95); opacity: 0; }
+    60% { transform: scale(1.03); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes toastIn {
+    from { transform: translateY(10px); opacity: 0 }
+    to { transform: translateY(0); opacity: 1 }
+  }
 }

@@ -21,7 +21,7 @@ export default function WordGrid({
             onKeyDown={(e) => handleKeyDown(e, word)}
             onClick={() => toggleWord(word, i)}
             onFocus={() => setFocusedIndex(i)}
-            className={`py-3 px-2 rounded-md text-center border ${isSelected ? 'bg-indigo-600 text-white shadow-lg scale-[0.98]' : 'bg-white text-gray-800 shadow-sm hover:shadow-md hover:scale-[1.02]'} ${isFocused ? 'ring-2 ring-offset-2 ring-indigo-300' : ''} min-h-[60px] sm:min-h-[80px] flex items-center justify-center`}
+              className={`py-3 px-2 rounded-md text-center border ${isSelected ? "bg-indigo-600 text-white shadow-lg scale-[0.98] animate-pop" : "bg-white text-gray-800 shadow-sm hover:shadow-md hover:scale-[1.02] animate-press"} ${isFocused ? "ring-2 ring-offset-2 ring-indigo-300" : ""} min-h-[60px] sm:min-h-[80px] flex items-center justify-center`}
           >
             {word}
           </button>
