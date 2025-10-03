@@ -9,7 +9,7 @@ export default function WordGrid({
   setFocusedIndex,
 }) {
   return (
-    <div className="grid grid-cols-4 gap-3" role="grid">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" role="grid">
       {words.map((word, i) => {
         const isSelected = selected.includes(word);
         const isFocused = focusedIndex === i;
@@ -21,7 +21,7 @@ export default function WordGrid({
             onKeyDown={(e) => handleKeyDown(e, word)}
             onClick={() => toggleWord(word, i)}
             onFocus={() => setFocusedIndex(i)}
-            className={`py-3 px-2 rounded-md text-center border ${isSelected ? "bg-blue-600 text-white" : "bg-white text-gray-800"} ${isFocused ? "ring-2 ring-offset-2 ring-blue-300" : ""}`}
+            className={`py-3 px-2 rounded-md text-center border ${isSelected ? 'bg-indigo-600 text-white shadow-lg scale-[0.98]' : 'bg-white text-gray-800 shadow-sm hover:shadow-md hover:scale-[1.02]'} ${isFocused ? 'ring-2 ring-offset-2 ring-indigo-300' : ''} min-h-[60px] sm:min-h-[80px] flex items-center justify-center`}
           >
             {word}
           </button>

@@ -1,5 +1,6 @@
 import React from "react";
 import useGame from "../hooks/useGame";
+import Button from "../ui/Button";
 import Timer from "./Timer";
 import MessageBar from "./MessageBar";
 import WordGrid from "./WordGrid";
@@ -23,20 +24,16 @@ export default function KoreanConnections() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button
-                  onClick={() => game.setShowLeaderboard(true)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition"
-                  aria-label="리더보드"
-                >
-                  🏆
-                </button>
-                <button
-                  onClick={() => game.setShowHelp?.(!game.showHelp)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition"
-                  aria-label="도움말"
-                >
-                  ❔
-                </button>
+                <div className="hidden sm:block">
+                  <Button variant="secondary" onClick={() => game.setShowLeaderboard(true)}>
+                    리더보드
+                  </Button>
+                </div>
+                <div>
+                  <Button variant="secondary" onClick={() => game.setShowHelp?.(!game.showHelp)}>
+                    도움말
+                  </Button>
+                </div>
               </div>
             </div>
             <div className="flex justify-between items-center">
