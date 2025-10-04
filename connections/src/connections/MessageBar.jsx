@@ -5,14 +5,16 @@ export default function MessageBar({
   messageType,
   messageStyles,
   autoHide = true,
-  duration = 3000,
+  duration = null,
 }) {
   const [visible, setVisible] = useState(!!message);
 
   useEffect(() => {
     setVisible(!!message);
     if (message && autoHide) {
-      const t = setTimeout(() => setVisible(false), duration);
+      const cssVal = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--toast-duration')) || 300;
+      const ms = duration != null ? duration : cssVal;
+      const t = setTimeout(() => setVisible(false), ms);
       return () => clearTimeout(t);
     }
   }, [message, autoHide, duration]);
@@ -28,7 +30,12 @@ export default function MessageBar({
         aria-live="polite"
       >
         <div className={`px-4 py-3 border rounded-md ${classes} flex items-center justify-between`}>
-          <span className="text-sm">{message}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-xl">
+              {messageType === 'success' ? '✅' : messageType === 'error' ? '❌' : messageType === 'warning' ? '⚠️' : 'ℹ️'}
+            </span>
+            <span className="text-sm">{message}</span>
+          </div>
         </div>
       </div>
     </div>

@@ -3,6 +3,29 @@
 @tailwind utilities;
 
 @layer utilities {
+  :root {
+    --pop-duration: 180ms;
+    --pop-easing: cubic-bezier(.2,.9,.3,1);
+    --press-duration: 120ms;
+    --press-easing: ease-out;
+    --toast-duration: 300ms;
+    --toast-easing: cubic-bezier(.2,.9,.3,1);
+    --slide-duration: 300ms;
+    --slide-easing: cubic-bezier(.2,.9,.3,1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pop,
+    .animate-toast,
+    .animate-slideUp {
+      animation: none !important;
+      transition: none !important;
+    }
+    button,
+    .animate-press {
+      transition: none !important;
+    }
+  }
   .animate-fadeIn {
     animation: fadeIn 0.2s ease-out;
   }
@@ -32,25 +55,25 @@
   }
 
   .animate-pop {
-    animation: pop 180ms cubic-bezier(.2,.9,.3,1);
+    animation: pop var(--pop-duration) var(--pop-easing);
   }
 
   .animate-press {
-    transition: transform 120ms ease-out;
+    transition: transform var(--press-duration) var(--press-easing);
   }
 
   .animate-toast {
-    animation: toastIn 300ms cubic-bezier(.2,.9,.3,1);
+    animation: toastIn var(--toast-duration) var(--toast-easing);
   }
 
   @keyframes pop {
-    0% { transform: scale(0.95); opacity: 0; }
-    60% { transform: scale(1.03); opacity: 1; }
+    0% { transform: scale(0.96); opacity: 0; }
+    50% { transform: scale(1.04); opacity: 1; }
     100% { transform: scale(1); }
   }
 
   @keyframes toastIn {
-    from { transform: translateY(10px); opacity: 0 }
+    from { transform: translateY(8px); opacity: 0 }
     to { transform: translateY(0); opacity: 1 }
   }
 }
