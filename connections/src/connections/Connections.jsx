@@ -38,7 +38,7 @@ export default function KoreanConnections() {
             </div>
             <div className="flex justify-between items-center">
               <div className="text-xs sm:text-sm text-indigo-200">
-                오늘의 문제 #{game.puzzles ? game.puzzles.length > 0 && new Date().getDay() : ""}
+                오늘의 문제 #{game.currentPuzzleIndex + 1}
               </div>
               <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-lg">
                 <Timer timer={game.timer} formatTime={game.formatTime} />
@@ -117,7 +117,7 @@ export default function KoreanConnections() {
               <button
                 onClick={game.checkAnswer}
                 disabled={game.selected.length !== 4 || game.gameOver}
-                className={`flex-1 py-3 sm:py-4 rounded-xl font-bold transition-all text-sm sm:text-base ${game.selected.length === 4 && !game.gameOver ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-200 text-gray-400"}`}
+                className={`flex-1 py-3 sm:py-4 rounded-xl font-bold transition-all text-sm sm:text-base ${game.selected.length === 4 && !game.gameOver ? "bg-blue-600 hover:bg-blue-700 text-white active:scale-95 shadow-md hover:shadow-lg" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}
                 aria-label={`제출하기 (${game.selected.length}/4 선택됨)`}
               >
                 제출하기 ({game.selected.length}/4)
@@ -125,7 +125,7 @@ export default function KoreanConnections() {
               <button
                 onClick={() => game.setSelected?.([])}
                 disabled={game.selected.length === 0 || game.gameOver}
-                className="px-6 py-3 sm:py-4 bg-gray-100 hover:bg-gray-200 rounded-xl font-semibold transition-all disabled:opacity-50 text-sm sm:text-base"
+                className="px-6 py-3 sm:py-4 bg-gray-100 hover:bg-gray-200 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 취소
               </button>

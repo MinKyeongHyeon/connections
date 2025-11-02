@@ -5,13 +5,13 @@
 @layer utilities {
   :root {
     --pop-duration: 180ms;
-    --pop-easing: cubic-bezier(.2,.9,.3,1);
+    --pop-easing: cubic-bezier(0.2, 0.9, 0.3, 1);
     --press-duration: 120ms;
     --press-easing: ease-out;
     --toast-duration: 300ms;
-    --toast-easing: cubic-bezier(.2,.9,.3,1);
+    --toast-easing: cubic-bezier(0.2, 0.9, 0.3, 1);
     --slide-duration: 300ms;
-    --slide-easing: cubic-bezier(.2,.9,.3,1);
+    --slide-easing: cubic-bezier(0.2, 0.9, 0.3, 1);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -67,13 +67,27 @@
   }
 
   @keyframes pop {
-    0% { transform: scale(0.96); opacity: 0; }
-    50% { transform: scale(1.04); opacity: 1; }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(0.96);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.04);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   @keyframes toastIn {
-    from { transform: translateY(8px); opacity: 0 }
-    to { transform: translateY(0); opacity: 1 }
+    from {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 }

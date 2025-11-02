@@ -174,6 +174,10 @@ export default function useGame() {
   const handleKeyDown = (e, word) => {
     const currentIndex = words.indexOf(word);
     switch (e.key) {
+      case "Escape":
+        e.preventDefault();
+        setSelected([]);
+        break;
       case "ArrowRight":
         e.preventDefault();
         if (currentIndex < words.length - 1) setFocusedIndex(currentIndex + 1);

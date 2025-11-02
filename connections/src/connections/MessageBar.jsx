@@ -12,7 +12,9 @@ export default function MessageBar({
   useEffect(() => {
     setVisible(!!message);
     if (message && autoHide) {
-      const cssVal = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--toast-duration')) || 300;
+      const cssVal =
+        parseInt(getComputedStyle(document.documentElement).getPropertyValue("--toast-duration")) ||
+        300;
       const ms = duration != null ? duration : cssVal;
       const t = setTimeout(() => setVisible(false), ms);
       return () => clearTimeout(t);
@@ -32,7 +34,13 @@ export default function MessageBar({
         <div className={`px-4 py-3 border rounded-md ${classes} flex items-center justify-between`}>
           <div className="flex items-center gap-3">
             <span className="text-xl">
-              {messageType === 'success' ? '✅' : messageType === 'error' ? '❌' : messageType === 'warning' ? '⚠️' : 'ℹ️'}
+              {messageType === "success"
+                ? "✅"
+                : messageType === "error"
+                  ? "❌"
+                  : messageType === "warning"
+                    ? "⚠️"
+                    : "ℹ️"}
             </span>
             <span className="text-sm">{message}</span>
           </div>

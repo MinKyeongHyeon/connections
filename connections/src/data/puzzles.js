@@ -87,8 +87,8 @@ export const puzzles = [
         icon: "triangle",
       },
       {
-        name: "사신",
-        words: ["청룡", "백호", "현무", "백호"],
+        name: "사신 (동물)",
+        words: ["청룡", "백호", "현무", "주작"],
         difficulty: "expert",
         color: "bg-purple-400",
         icon: "star",

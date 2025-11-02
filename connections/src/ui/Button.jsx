@@ -4,12 +4,15 @@ export default function Button({ children, variant = "primary", className = "", 
   const base =
     "inline-flex items-center justify-center px-4 py-2 rounded-lg font-semibold transition-shadow transform-gpu focus:outline-none";
   const variants = {
-    primary: "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow-md",
-    secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200",
-    danger: "bg-red-500 text-white hover:bg-red-600",
+    primary: "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow-md disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed",
+    secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed",
+    danger: "bg-red-500 text-white hover:bg-red-600 disabled:bg-red-300 disabled:text-gray-400 disabled:cursor-not-allowed",
   };
   return (
-    <button className={`${base} ${variants[variant] || variants.primary} ${className} active:scale-[0.97]`} {...props}>
+    <button
+      className={`${base} ${variants[variant] || variants.primary} ${className} active:scale-[0.97]`}
+      {...props}
+    >
       {children}
     </button>
   );
